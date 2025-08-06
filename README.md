@@ -42,35 +42,37 @@ This separation of concerns ensures the infrastructure is reproducible, declarat
 ```mermaid
 graph TD
 
-  %% Apps
+  %% Chaos Engineering Stack
+  subgraph Chaos Engineering
+    Litmus[LitmusChaos]
+  end
+
+  %% Application Layer
   subgraph Applications
-    App1["Sample App"]
-    App2["Dummy App"]
+    App1[Sample App]
+    App2[Dummy App]
+  end
+
+  %% Observability Stack
+  subgraph Observability
+    Prometheus
+    Loki
+    Grafana
   end
 
   %% Services
   App1 --> Service1
   App2 --> Service2
 
-  %% Observability
-  subgraph Observability
-    Prometheus
-    Loki
-    Grafana
+  %% Observability connections
+  App1 --> Prometheus
+  App2 --> Prometheus
+  App1 --> Loki
+  App2 --> Loki
+  Prometheus --> Grafana
+  Loki --> Grafana
 
-    App1 --> Prometheus
-    App2 --> Prometheus
-    App1 --> Loki
-    App2 --> Loki
-    Prometheus --> Grafana
-    Loki --> Grafana
-  end
-
-  %% Chaos Engineering
-  subgraph Chaos Engineering
-    Litmus["LitmusChaos"]
-  end
-
+  %% Chaos connections
   Litmus -->|Injects faults| App1
   Litmus -->|Injects faults| App2
 ```
