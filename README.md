@@ -41,24 +41,25 @@ This separation of concerns ensures the infrastructure is reproducible, declarat
 
 ```mermaid
 graph TD
-    App1[Sample App<br>(Deployment)] --> Service1
-    App2[Dummy App<br>(Deployment)] --> Service2
+  App1["Sample App\n(Deployment)"] --> Service1
+  App2["Dummy App\n(Deployment)"] --> Service2
 
-    subgraph Observability
-        Prometheus --> Grafana
-        Loki --> Grafana
-        App1 --> Prometheus
-        App2 --> Prometheus
-        App1 --> Loki
-        App2 --> Loki
-    end
+  subgraph Observability
+    Prometheus --> Grafana
+    Loki --> Grafana
+    App1 --> Prometheus
+    App2 --> Prometheus
+    App2 --> Loki
+    App1 --> Loki
+  end
 
-    subgraph Chaos
-        LitmusChaos
-    end
+  subgraph Chaos
+    LitmusChaos
+  end
 
-    LitmusChaos -->|Injects faults| App1
-    LitmusChaos -->|Injects faults| App2
+  LitmusChaos -->|Injects faults| App1
+  LitmusChaos -->|Injects faults| App2
+
 ```
 
 ---

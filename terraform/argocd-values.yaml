@@ -1,0 +1,16 @@
+configs:
+  params:
+    server.insecure: true
+
+  cm:
+    application.instanceLabelKey: argocd.argoproj.io/instance
+    admin.enabled: "true"
+
+  rbac:
+    policy.default: role:admin
+    policy.csv: |
+      g, system:authenticated, role:admin
+
+server:
+  service:
+    type: LoadBalancer
